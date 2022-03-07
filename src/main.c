@@ -28,11 +28,11 @@ void shutdown_program() {
   exit(0);
 }
 
-void pid_routine(int key) {
+void potentiometer_routine(int key) {
   system("clear");
   float TI, TR, TE;
   int value_to_send = 0;
-  printf("\n================== Iniciada rotina PID ==================\n");
+  printf("\n================== Controle Potenciometro ==================\n");
   pid_configura_constantes(20, 0.1, 100);
   do {
     write_uart_get(uart_filesystem, GET_INTERNAL_TEMP);
@@ -56,7 +56,7 @@ void pid_routine(int key) {
       key_gpio = read_uart(uart_filesystem, GET_KEY_VALUE).int_value;
     }
 
-    write_uart_send(uart_filesystem, value_to_send);
+    write_uart_send_CTR(uart_filesystem, value_to_send);
   } while (key_gpio == key);
   printf("============================================================\n");
 }
@@ -65,7 +65,7 @@ void terminal_routine(float TR, int key) {
   system("clear");
   float TI, TE;
   int value_to_send = 0;
-  printf("\n================== Iniciada rotina PID ==================\n");
+  printf("\n================== Controle Terminal ==================\n");
   pid_configura_constantes(20, 0.1, 100);
   do {
     write_uart_get(uart_filesystem, GET_INTERNAL_TEMP);
@@ -74,9 +74,6 @@ void terminal_routine(float TR, int key) {
     double value_to_send = pid_controle(TI);
 
     pwm_control(value_to_send);
-
-    write_uart_get(uart_filesystem, GET_POTENTIOMETER);
-    // TR = read_uart(uart_filesystem, GET_POTENTIOMETER).float_value;
 
     pid_atualiza_referencia(TR);
 
@@ -107,7 +104,7 @@ void init() {
 void menu () {
   int option;
   float INPUT_TR;
-  printf("Como deseja controlar o programa?\n\t1) Terminal\n\t2) Potenciometro\n\t 3)Curva Reflow(Nao funciona)\n");
+  printf("Como deseja controlar o programa?\n\t1) Terminal\n\t2) Potenciometro\n\t3) Curva Reflow(Indisponível)\n");
   scanf("%d", &option);
   switch (option) {
     case 1:
@@ -118,10 +115,10 @@ void menu () {
       terminal_routine(INPUT_TR, 1);
     case 2:
       use_terminal = true;
-      pid_routine(1);
+      potentiometer_routine(1);
 
     case 3:
-     turn_off_system(1);
+    //  turn_off_system(1);
     default:
       system("clear");
       printf("Opção invalida\n");

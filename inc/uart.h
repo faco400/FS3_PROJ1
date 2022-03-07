@@ -21,7 +21,7 @@ typedef struct number {
 
 int connect_uart();
 void write_uart_get(int filestream, unsigned char code);
-void write_uart_send(int filestream, int value);
+void write_uart_send_CTR(int filestream, int value);
 void write_uart_send_REF(int filestream, float reference_signal);
 number read_uart(int filestream, unsigned char code);
 void close_uart(int filestream);

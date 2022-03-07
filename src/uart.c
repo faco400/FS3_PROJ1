@@ -43,7 +43,7 @@ void write_uart_get(int filestream, unsigned char code) {
   sleep(1);
 }
 
-void write_uart_send(int filestream, int control_signal) {
+void write_uart_send_CTR(int filestream, int control_signal) {
   unsigned char package[7] = {0x01, 0x16, SEND_SIGNAL, 0x05,
                               0x05, 0x00, 0x00};
   unsigned char msg[13];
