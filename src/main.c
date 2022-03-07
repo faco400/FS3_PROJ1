@@ -6,7 +6,11 @@
 #include <unistd.h>
 
 #include "bme280.h"
+#include "lcd_control16x2.h"
+#include "gpio.h"
+#include "pid.h"
 #include "uart.h"
+#include "thermometer.h"
 
 #define true 1
 #define false 0
@@ -15,7 +19,7 @@ int use_terminal = false;
 struct bme280_dev bme_connection;
 int uart_filesystem, key_gpio = 1;
 
-void turnoff_program() {
+void shutdown_program() {
   system("clear");
   printf("Programa encerrado\n");
   turn_resistance_off();
@@ -129,7 +133,7 @@ void menu () {
 
 int main() {
   init();
-  signal(SIGINT, turnoff_program);
+  signal(SIGINT, shutdown_program);
   // signal(SIGQUIT, toggle_routine);
   menu();
   return 0;
