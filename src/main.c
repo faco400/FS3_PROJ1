@@ -49,7 +49,7 @@ void pid_routine(int key) {
 
     TE = get_current_temperature(&bme_connection);
     printf("\tUART TI: %.2f⁰C - TR: %.2f⁰C - TE: %.2f⁰C\n", TI, TR, TE);
-    print_display("UART ", TI, TR, TE);
+    print_lcdTEMP("UART ", TI, TR, TE);
 
     if (!use_terminal) {
       write_uart_get(uart_filesystem, GET_KEY_VALUE);
@@ -82,7 +82,7 @@ void terminal_routine(float TR, int key) {
 
     TE = get_current_temperature(&bme_connection);
     printf("\tTERMINAL TI: %.2f⁰C - TR: %.2f⁰C - TE: %.2f⁰C\n", TI, TR, TE);
-    print_display("Terminal ", TI, TR, TE);
+    print_lcdTEMP("Terminal ", TI, TR, TE);
 
     if (!use_terminal) {
       write_uart_get(uart_filesystem, GET_KEY_VALUE);
@@ -92,14 +92,13 @@ void terminal_routine(float TR, int key) {
     write_uart_send_REF(uart_filesystem, TR);
   } while (key_gpio == key);
   printf("============================================================\n");
-  // on_off_routine(key_gpio);
 }
 
 void init() {
   wiringPiSetup();
   turn_resistance_off();
   turn_fan_off();
-  connect_display();
+  lcd_init();
   bme_connection = connect_bme();
   uart_filesystem = connect_uart();
   system("clear");
@@ -134,7 +133,6 @@ void menu () {
 int main() {
   init();
   signal(SIGINT, shutdown_program);
-  // signal(SIGQUIT, toggle_routine);
   menu();
   return 0;
 }

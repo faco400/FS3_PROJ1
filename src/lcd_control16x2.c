@@ -16,7 +16,7 @@
 
 int fd;  // seen by all subroutines
 
-void print_lcdTEMP(char [],float tempI, float tempR, float tempE) {
+void print_lcdTEMP(char MODE[],float tempI, float tempR, float tempE) {
 
   if (wiringPiSetup () == -1) exit (1);
 
@@ -26,12 +26,12 @@ void print_lcdTEMP(char [],float tempI, float tempR, float tempE) {
   lcdLoc(LINE1);
   typeln(MODE);
   typeln("TI:");
-  typeFloat(TI);
+  typeFloat(tempI);
   lcdLoc(LINE2);
   typeln("TR:");
-  typeFloat(TR);
+  typeFloat(tempR);
   typeln(" TE:");
-  typeFloat(TE);
+  typeFloat(tempE);
 
 }
 
